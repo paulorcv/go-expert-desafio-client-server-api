@@ -93,6 +93,8 @@ func cotacaoHandler(db *sql.DB) http.HandlerFunc {
 			log.Printf("erro ao salvar cotação: %v", err)
 		}
 
+		log.Printf("GET /cotacao -> bid=%s", cotacao.Bid)
+
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(cotacaoResponse{Bid: cotacao.Bid}); err != nil {
 			log.Printf("erro ao escrever resposta: %v", err)

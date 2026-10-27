@@ -27,7 +27,8 @@ Criar dois sistemas em Go:
 ```
 .
 ├── server/server.go   # servidor HTTP na porta 8080 (GET /cotacao)
-└── client/client.go   # cliente que salva a cotação em cotacao.txt
+├── client/client.go   # cliente que salva a cotação em cotacao.txt
+└── tui/main.go        # TUI com client e server lado a lado
 ```
 
 O banco SQLite usa o driver `modernc.org/sqlite` (Go puro, não precisa de CGO).
@@ -35,6 +36,32 @@ O banco SQLite usa o driver `modernc.org/sqlite` (Go puro, não precisa de CGO).
 ## Como executar
 
 Requer Go 1.25+.
+
+### Modo interativo (TUI) — recomendado
+
+Para ver client e server lado a lado num só terminal:
+
+```bash
+go run ./tui
+```
+
+O TUI compila os dois programas, sobe o server automaticamente e mostra os logs dele à direita. Cada chamada ao client aparece à esquerda, com a duração e o resultado. Ao sair, o server é encerrado.
+
+Na parte de baixo ficam o conteúdo de `client/cotacao.txt` e os 20 registros mais recentes de `server/cotacoes.db`. Os dois são atualizados quando as chamadas em andamento terminam.
+
+| Tecla | Ação |
+|-------|------|
+| `c` / `enter` | chama o client |
+| `m` | dispara 5 chamadas simultâneas |
+| `r` | reinicia o server |
+| `s` | para o server |
+| `a` | atualiza os painéis de cotacao.txt e cotacoes.db |
+| `x` | limpa o painel em foco |
+| `tab` | alterna o foco entre os painéis |
+| `↑` `↓` `←` `→` `pgup` `pgdn` | rola o painel em foco |
+| `q` / `ctrl+c` | sai |
+
+### Modo manual (dois terminais)
 
 Em um terminal, suba o servidor (o banco `cotacoes.db` é criado dentro de `server/`):
 
