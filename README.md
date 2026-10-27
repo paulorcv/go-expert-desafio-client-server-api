@@ -21,3 +21,40 @@ Criar dois sistemas em Go:
 - Os 3 contextos devem retornar erro nos logs caso o tempo de execução seja insuficiente.
 - O `client.go` deve salvar a cotação atual em um arquivo `cotacao.txt` no formato: `Dólar: {valor}`
 - O endpoint do `server.go` deve ser `/cotacao` e a porta do servidor HTTP deve ser **8080**.
+
+## Estrutura
+
+```
+.
+├── server/server.go   # servidor HTTP na porta 8080 (GET /cotacao)
+└── client/client.go   # cliente que salva a cotação em cotacao.txt
+```
+
+O banco SQLite usa o driver `modernc.org/sqlite` (Go puro, não precisa de CGO).
+
+## Como executar
+
+Requer Go 1.25+.
+
+Em um terminal, suba o servidor (o banco `cotacoes.db` é criado dentro de `server/`):
+
+```bash
+cd server
+go run server.go
+```
+
+Em outro terminal, execute o cliente (o arquivo `cotacao.txt` é criado dentro de `client/`):
+
+```bash
+cd client
+go run client.go
+cat cotacao.txt   # Dólar: 5.3416
+```
+
+Para consultar as cotações gravadas:
+
+```bash
+sqlite3 server/cotacoes.db "SELECT id, bid, created_at FROM cotacoes;"
+```
+
+Se algum dos timeouts (200ms na API, 10ms no banco, 300ms no cliente) for excedido, o erro é registrado no log.
