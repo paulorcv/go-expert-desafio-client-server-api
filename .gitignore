@@ -1,0 +1,16 @@
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Generated files
+*.db
+cotacao.txt
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
